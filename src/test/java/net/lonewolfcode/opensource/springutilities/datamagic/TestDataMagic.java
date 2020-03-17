@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TestDataMagic
@@ -185,6 +186,40 @@ public class TestDataMagic
     public void testCreateDefaultObjectSetsCustomObjectList() throws Exception
     {
         Assert.assertEquals(List.of(DataMagic.createDefaultObject(b.class)), actual.b_list);
+    }
+
+    @Test
+    public void testCreateDefaultList() throws Exception
+    {
+        List<a> actualList = DataMagic.createDefaultObjectList(a.class);
+        Assert.assertEquals(List.of(DataMagic.createDefaultObject(a.class)), actualList);
+    }
+
+    @Test
+    public void testCreateDefaultListWithMultipleItems() throws Exception
+    {
+        List<a> expected = new ArrayList<>();
+        List<a> actualList = DataMagic.createDefaultObjectList(a.class, 12);
+        for (int x = 0; x < 12; x++) expected.add(DataMagic.createDefaultObject(a.class));
+
+        Assert.assertEquals(expected, actualList);
+    }
+
+    @Test
+    public void testCreateDefaultListWithImportantTag() throws Exception
+    {
+        List<b> actualList = DataMagic.createDefaultObjectList(b.class, Important.class);
+        Assert.assertEquals(List.of(DataMagic.createDefaultObject(b.class, Important.class)), actualList);
+    }
+
+    @Test
+    public void testCreateDefaultListWithImportantFlagAndMultipleItems() throws Exception
+    {
+        List<b> expected = new ArrayList<>();
+        List<b> actualList = DataMagic.createDefaultObjectList(b.class, 12, Important.class);
+        for (int x = 0; x < 12; x++) expected.add(DataMagic.createDefaultObject(b.class, Important.class));
+
+        Assert.assertEquals(expected, actualList);
     }
 
     @Test
