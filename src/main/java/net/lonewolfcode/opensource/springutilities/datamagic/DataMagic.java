@@ -1,12 +1,11 @@
 package net.lonewolfcode.opensource.springutilities.datamagic;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import java.lang.reflect.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DataMagic
 {
@@ -39,7 +38,7 @@ public class DataMagic
 
     public static <T> T createDefaultObject(Class<T> clazz, Class<? extends Annotation> importantMarker) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException
     {
-        T output = null;
+        T output;
 
         if (DataConstants.defaultMap.containsKey(clazz))
         {
@@ -61,6 +60,33 @@ public class DataMagic
         }
 
         return output;
+    }
+
+    public static Map<Class<? extends Annotation>, List<Method>> getMethodsSortedByAnnotation(Class<?> clazz)
+    {
+        Map<Class<? extends Annotation>, List<Method>> annotatedMethods = new HashMap<>();
+
+        for (Method method : clazz.getMethods())
+        {
+            Annotation[] annotations = method.getAnnotations();
+            if (annotations.length > 0)
+            {
+                for (Annotation annotation : annotations)
+                {
+                    Class<? extends Annotation> annotationClass = annotation.annotationType();
+                    if (!annotatedMethods.containsKey(annotationClass))
+                        annotatedMethods.put(annotationClass, new ArrayList<>());
+                    annotatedMethods.get(annotationClass).add(method);
+                }
+            }
+            else
+            {
+                if (!annotatedMethods.containsKey(null)) annotatedMethods.put(null, new ArrayList<>());
+                annotatedMethods.get(null).add(method);
+            }
+        }
+
+        return annotatedMethods;
     }
 
     private static void setField(Field field, Object object, Class<? extends Annotation> importantMarker) throws IllegalAccessException, NoSuchMethodException, InstantiationException, InvocationTargetException
