@@ -1,14 +1,16 @@
 package net.lonewolfcode.opensource.springutilities.datamagic;
 
-import net.lonewolfcode.opensource.springutilities.datamagic.testdata.Important;
-import net.lonewolfcode.opensource.springutilities.datamagic.testdata.a;
-import net.lonewolfcode.opensource.springutilities.datamagic.testdata.b;
+import net.lonewolfcode.opensource.springutilities.datamagic.testdata.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TestDataMagic
 {
@@ -231,5 +233,34 @@ public class TestDataMagic
         manuallyCreated.notImportant = null;
 
         Assert.assertEquals(manuallyCreated, importantOnly);
+    }
+
+    @Test
+    public void testGetAnnotatedMethods()
+    {
+        Method[] methods = b.class.getMethods();
+        Map<Class<? extends Annotation>, List<Method>> expected = new HashMap<>();
+        Map<Class<? extends Annotation>, List<Method>> actual = DataMagic.getMethodsSortedByAnnotation(b.class);
+        for (Method method : methods)
+        {
+            Annotation[] annotations = method.getAnnotations();
+            if (annotations.length > 0)
+            {
+                for (Annotation annotation : annotations)
+                {
+                    if (! expected.containsKey(annotation.annotationType())) expected.put(annotation.annotationType(), new ArrayList<>());
+                    expected.get(annotation.annotationType()).add(method);
+                }
+            }
+            else
+            {
+                if (!expected.containsKey(null)) expected.put(null, new ArrayList<>());
+                expected.get(null).add(method);
+            }
+        }
+
+        Assert.assertEquals(expected, actual);
+        Assert.assertEquals(2, actual.get(MethodAnnotation.class).size());
+        Assert.assertEquals(1, actual.get(Other.class).size());
     }
 }

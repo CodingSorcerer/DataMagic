@@ -87,7 +87,6 @@ public class a
                 Objects.equals(b_list, a.b_list);
     }
 
-    @Override
     public int hashCode()
     {
         return Objects.hash(byte_primitive, short_primitive, integer_primitive, long_primitive, float_primitive, double_primitive, boolean_primitive, char_primitive, string, byte_wrapper, short_wrapper, integer_wrapper, long_wrapper, float_wrapper, double_wrapper, boolean_wrapper, character_wrapper, class_b, string_list, byte_list, short_list, integer_list, long_list, float_list, double_list, boolean_list, character_list, b_list);
