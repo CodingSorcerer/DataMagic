@@ -1,18 +1,12 @@
 package net.lonewolfcode.opensource.springutilities.datamagic;
 
-import com.google.gson.Gson;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class DataMagic
 {
-    private static Gson converter = new Gson();
-
     public static <T> List<T> createDefaultObjectList(Class<T> clazz) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
         return createDefaultObjectList(clazz, 1, null);
@@ -40,6 +34,7 @@ public class DataMagic
         return createDefaultObject(clazz, null);
     }
 
+    @SuppressWarnings({"unchecked"})
     public static <T> T createDefaultObject(Class<T> clazz, Class<? extends Annotation> importantMarker) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException
     {
         T output;
@@ -50,18 +45,17 @@ public class DataMagic
         }
         else
         {
+            output = instanciateObject(clazz);
             Field[] fields = clazz.getDeclaredFields();
-            Map<String, Object> fieldList = new HashMap<>();
 
             for (Field field : fields)
             {
                 if (importantMarker == null || field.getDeclaredAnnotation(importantMarker) != null)
                 {
-                    setField(field, fieldList, importantMarker);
+                    field.setAccessible(true);
+                    setField(field, output, importantMarker);
                 }
             }
-
-            output = converter.fromJson(converter.toJson(fieldList), clazz);
         }
 
         return output;
@@ -94,21 +88,50 @@ public class DataMagic
         return annotatedMethods;
     }
 
-    private static void setField(Field field, Map<String, Object> object, Class<? extends Annotation> importantMarker) throws IllegalAccessException, NoSuchMethodException, InstantiationException, InvocationTargetException
+    private static void setField(Field field, Object object, Class<? extends Annotation> importantMarker) throws IllegalAccessException, NoSuchMethodException, InstantiationException, InvocationTargetException
     {
         Type fieldType = field.getType();
 
         if (DataConstants.defaultMap.containsKey(fieldType))
         {
-            object.put(field.getName(), DataConstants.defaultMap.get(fieldType));
+            field.set(object, DataConstants.defaultMap.get(fieldType));
         }
         else if (fieldType == List.class)
         {
-            object.put(field.getName(), createDefaultObjectList((Class<?>) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0], 1, importantMarker));
+            field.set(object, createDefaultObjectList((Class<?>) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0], 1, importantMarker));
         }
         else
         {
-            object.put(field.getName(), createDefaultObject((Class<?>) fieldType));
+            field.set(object, createDefaultObject((Class<?>) fieldType));
         }
+    }
+
+    @SuppressWarnings({"unchecked"})
+    private static <T> T instanciateObject(Class<T> clazz) throws InstantiationException, IllegalAccessException, NoSuchMethodException
+    {
+        T output = null;
+        List<Constructor<?>> constructorList = List.of(clazz.getDeclaredConstructors()).stream().sorted(Comparator.comparingInt(Constructor::getParameterCount)).collect(Collectors.toList());
+        Iterator<Constructor<?>> constructorIterator = constructorList.iterator();
+
+        while (constructorIterator.hasNext() && output == null)
+        {
+            try
+            {
+                Constructor<?> constructor = constructorIterator.next();
+                Class<?>[] parameterTypes = constructor.getParameterTypes();
+                Object[] parameters = new Object[parameterTypes.length];
+                for (int x = 0; x < parameterTypes.length; x++) parameters[x] = createDefaultObject(parameterTypes[x]);
+                constructor.setAccessible(true);
+                output = (T)constructor.newInstance(parameters);
+            }
+            catch (InvocationTargetException e)
+            {
+                output = null;
+            }
+        }
+
+        if (output == null) throw new InstantiationException(String.format("Could not construct object from given visible constructors: %s", constructorList.toString()));
+
+        return output;
     }
 }

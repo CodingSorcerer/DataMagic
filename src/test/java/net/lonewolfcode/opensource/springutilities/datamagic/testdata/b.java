@@ -9,10 +9,12 @@ public class b
     public String notImportant;
     @Other
     public String someOtherValue;
+    int value;
 
-    public b(String str)
+    public b(String str, int someInt)
     {
         string = str;
+        value = someInt;
     }
 
     @MethodAnnotation
@@ -22,6 +24,7 @@ public class b
                 "string='" + string + '\'' +
                 ", notImportant='" + notImportant + '\'' +
                 ", someOtherValue='" + someOtherValue + '\'' +
+                ", value=" + value +
                 '}';
     }
 
@@ -32,13 +35,14 @@ public class b
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         b b = (b) o;
-        return Objects.equals(string, b.string) &&
+        return value == b.value &&
+                Objects.equals(string, b.string) &&
                 Objects.equals(notImportant, b.notImportant) &&
                 Objects.equals(someOtherValue, b.someOtherValue);
     }
 
     public int hashCode()
     {
-        return Objects.hash(string, notImportant, someOtherValue);
+        return Objects.hash(string, notImportant, someOtherValue, value);
     }
 }
