@@ -10,6 +10,11 @@ public class b
     @Other
     public String someOtherValue;
 
+    public b(String str)
+    {
+        string = str;
+    }
+
     @MethodAnnotation
     public String toString()
     {

@@ -1,5 +1,7 @@
 package net.lonewolfcode.opensource.springutilities.datamagic;
 
+import com.google.gson.Gson;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.util.ArrayList;
@@ -9,6 +11,8 @@ import java.util.Map;
 
 public class DataMagic
 {
+    private static Gson converter = new Gson();
+
     public static <T> List<T> createDefaultObjectList(Class<T> clazz) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
         return createDefaultObjectList(clazz, 1, null);
@@ -46,17 +50,18 @@ public class DataMagic
         }
         else
         {
-            output = clazz.getDeclaredConstructor().newInstance();
             Field[] fields = clazz.getDeclaredFields();
+            Map<String, Object> fieldList = new HashMap<>();
 
             for (Field field : fields)
             {
                 if (importantMarker == null || field.getDeclaredAnnotation(importantMarker) != null)
                 {
-                    field.setAccessible(true);
-                    setField(field, output, importantMarker);
+                    setField(field, fieldList, importantMarker);
                 }
             }
+
+            output = converter.fromJson(converter.toJson(fieldList), clazz);
         }
 
         return output;
@@ -89,21 +94,21 @@ public class DataMagic
         return annotatedMethods;
     }
 
-    private static void setField(Field field, Object object, Class<? extends Annotation> importantMarker) throws IllegalAccessException, NoSuchMethodException, InstantiationException, InvocationTargetException
+    private static void setField(Field field, Map<String, Object> object, Class<? extends Annotation> importantMarker) throws IllegalAccessException, NoSuchMethodException, InstantiationException, InvocationTargetException
     {
         Type fieldType = field.getType();
 
         if (DataConstants.defaultMap.containsKey(fieldType))
         {
-            field.set(object, DataConstants.defaultMap.get(fieldType));
+            object.put(field.getName(), DataConstants.defaultMap.get(fieldType));
         }
         else if (fieldType == List.class)
         {
-            field.set(object, createDefaultObjectList((Class<?>) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0], 1, importantMarker));
+            object.put(field.getName(), createDefaultObjectList((Class<?>) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0], 1, importantMarker));
         }
         else
         {
-            field.set(object, createDefaultObject((Class<?>) fieldType));
+            object.put(field.getName(), createDefaultObject((Class<?>) fieldType));
         }
     }
 }
