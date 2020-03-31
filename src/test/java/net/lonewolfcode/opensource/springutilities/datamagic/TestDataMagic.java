@@ -228,7 +228,7 @@ public class TestDataMagic
     public void testCreateDefaultObjectSetsOnlyImportantFields() throws Exception
     {
         b importantOnly = DataMagic.createDefaultObject(b.class, Important.class);
-        b manuallyCreated = new b();
+        b manuallyCreated = new b("");
         manuallyCreated.string = DataConstants.getConstant(String.class);
         manuallyCreated.notImportant = null;
 
