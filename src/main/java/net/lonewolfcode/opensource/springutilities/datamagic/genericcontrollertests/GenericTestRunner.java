@@ -1,6 +1,7 @@
 package net.lonewolfcode.opensource.springutilities.datamagic.genericcontrollertests;
 
 import net.lonewolfcode.opensource.springutilities.datamagic.DataMagic;
+import net.lonewolfcode.opensource.springutilities.datamagic.constants.InternalConstants;
 import org.junit.runner.Description;
 import org.junit.runner.Runner;
 import org.junit.runners.Suite;
@@ -39,7 +40,7 @@ public class GenericTestRunner extends Suite
         for (Class<?> controllerClass : classes)
         {
             if (controllerClass.getAnnotation(RestController.class) == null)
-                throw new InitializationError(String.format("Class '%s' must be  a rest endpoint. Please expose this endpoint using @RestController", controllerClass.getName()));
+                throw new InitializationError(String.format(InternalConstants.CONTROLLER_REST_ANNOTATION_NOT_FOUND_MESSAGE, controllerClass.getName()));
         }
         return classes;
     }
