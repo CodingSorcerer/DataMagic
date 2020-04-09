@@ -1,6 +1,6 @@
 package net.lonewolfcode.opensource.springutilities.datamagic.genericcontrollertests;
 
-import net.lonewolfcode.opensource.springutilities.datamagic.testcontroller.SimpleController;
+import net.lonewolfcode.opensource.springutilities.datamagic.testapplication.SimpleController;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 

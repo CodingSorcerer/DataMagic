@@ -63,7 +63,7 @@ public class GenericTestRunner extends Suite
                 Map<Class<? extends Annotation>, List<Method>> methods = DataMagic.getMethodsSortedByAnnotation(ctrlClazz);
                 for (Method method : methods.get(PostMapping.class))
                 {
-                    GenericPostTest.pushToQueue(method);
+                    GenericPostTest.addToQueue(method);
                     runners.add(new GenericRunner(GenericPostTest.class, String.format("Endpoint: %s%s", classUrl, getUrl(method.getAnnotation(PostMapping.class).value()))));
                 }
             }
