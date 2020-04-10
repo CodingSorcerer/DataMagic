@@ -1,4 +1,4 @@
-package net.lonewolfcode.opensource.springutilities.datamagic.testapplication;
+package net.lonewolfcode.opensource.springutilities.datamagic;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

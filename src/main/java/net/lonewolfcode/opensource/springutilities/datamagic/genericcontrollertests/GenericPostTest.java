@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class GenericPostTest
+class GenericPostTest
 {
     private String postUrl;
     private static Queue<Method> testingQueue = new LinkedList<>();

@@ -1,6 +1,8 @@
-package net.lonewolfcode.opensource.springutilities.datamagic;
+package net.lonewolfcode.opensource.springutilities.datamagic.tests;
 
-import net.lonewolfcode.opensource.springutilities.datamagic.testdata.*;
+import net.lonewolfcode.opensource.springutilities.datamagic.DataConstants;
+import net.lonewolfcode.opensource.springutilities.datamagic.DataMagic;
+import net.lonewolfcode.opensource.springutilities.datamagic.tests.testdata.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -248,7 +250,8 @@ public class TestDataMagic
             {
                 for (Annotation annotation : annotations)
                 {
-                    if (! expected.containsKey(annotation.annotationType())) expected.put(annotation.annotationType(), new ArrayList<>());
+                    if (!expected.containsKey(annotation.annotationType()))
+                        expected.put(annotation.annotationType(), new ArrayList<>());
                     expected.get(annotation.annotationType()).add(method);
                 }
             }

@@ -1,7 +1,6 @@
 package net.lonewolfcode.opensource.springutilities.datamagic.genericcontrollertests;
 
 import net.lonewolfcode.opensource.springutilities.datamagic.DataMagic;
-import net.lonewolfcode.opensource.springutilities.datamagic.constants.InternalConstants;
 import org.junit.runner.Description;
 import org.junit.runner.Runner;
 import org.junit.runners.Suite;
@@ -16,6 +15,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static net.lonewolfcode.opensource.springutilities.datamagic.constants.InternalConstants.InternalErrorMessageTemplates.*;
 
 public class GenericTestRunner extends Suite
 {
@@ -33,14 +34,14 @@ public class GenericTestRunner extends Suite
     {
         Suite.SuiteClasses annotation = clazz.getAnnotation(Suite.SuiteClasses.class);
         if (annotation == null)
-            throw new InitializationError(String.format("class '%s' must have a SuiteClasses annotation", clazz.getName()));
+            throw new InitializationError(String.format(TEST_CLASS_SUITE_CLASSES_ANNOTATION_NOT_FOUND, clazz.getName()));
         if (annotation.value().length < 1)
-            throw new InitializationError("No controller classes were provided in SuiteClasses annotation");
+            throw new InitializationError(TEST_CLASS_SUITE_CLASSES_ANNOTATION_HAS_NO_CONTROLLERS);
         List<Class<?>> classes = List.of(annotation.value());
         for (Class<?> controllerClass : classes)
         {
             if (controllerClass.getAnnotation(RestController.class) == null)
-                throw new InitializationError(String.format(InternalConstants.CONTROLLER_REST_ANNOTATION_NOT_FOUND_MESSAGE, controllerClass.getName()));
+                throw new InitializationError(String.format(CONTROLLER_REST_ANNOTATION_NOT_FOUND_MESSAGE, controllerClass.getName()));
         }
         return classes;
     }

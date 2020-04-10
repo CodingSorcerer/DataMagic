@@ -1,4 +1,4 @@
-package net.lonewolfcode.opensource.springutilities.datamagic.testdata;
+package net.lonewolfcode.opensource.springutilities.datamagic.tests.testdata;
 
 import java.util.Objects;
 

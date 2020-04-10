@@ -1,4 +1,4 @@
-package net.lonewolfcode.opensource.springutilities.datamagic.testdata;
+package net.lonewolfcode.opensource.springutilities.datamagic.tests.testdata;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD, ElementType.METHOD})
-public @interface Other
+@Target(ElementType.FIELD)
+public @interface Important
 {
 }
