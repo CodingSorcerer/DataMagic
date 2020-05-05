@@ -9,14 +9,14 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.*;
 
-public class TestDataMagic
+public class TestObjectGenerator
 {
     a actual;
 
     @Before
     public void setup() throws Exception
     {
-        actual = DataMagic.createDefaultObject(a.class);
+        actual = ObjectGenerator.createDefaultObject(a.class);
     }
 
     @Test
@@ -124,7 +124,7 @@ public class TestDataMagic
     @Test
     public void testCreateDefaultObjectSetsCustomObject() throws Exception
     {
-        Assert.assertEquals(DataMagic.createDefaultObject(b.class), actual.class_b);
+        Assert.assertEquals(ObjectGenerator.createDefaultObject(b.class), actual.class_b);
     }
 
     @Test
@@ -190,22 +190,22 @@ public class TestDataMagic
     @Test
     public void testCreateDefaultObjectSetsCustomObjectList() throws Exception
     {
-        Assert.assertEquals(List.of(DataMagic.createDefaultObject(b.class)), actual.b_list);
+        Assert.assertEquals(List.of(ObjectGenerator.createDefaultObject(b.class)), actual.b_list);
     }
 
     @Test
     public void testCreateDefaultList() throws Exception
     {
-        List<a> actualList = DataMagic.createDefaultObjectList(a.class);
-        Assert.assertEquals(List.of(DataMagic.createDefaultObject(a.class)), actualList);
+        List<a> actualList = ObjectGenerator.createDefaultObjectList(a.class);
+        Assert.assertEquals(List.of(ObjectGenerator.createDefaultObject(a.class)), actualList);
     }
 
     @Test
     public void testCreateDefaultListWithMultipleItems() throws Exception
     {
         List<a> expected = new ArrayList<>();
-        List<a> actualList = DataMagic.createDefaultObjectList(a.class, 12);
-        for (int x = 0; x < 12; x++) expected.add(DataMagic.createDefaultObject(a.class));
+        List<a> actualList = ObjectGenerator.createDefaultObjectList(a.class, 12);
+        for (int x = 0; x < 12; x++) expected.add(ObjectGenerator.createDefaultObject(a.class));
 
         Assert.assertEquals(expected, actualList);
     }
@@ -213,16 +213,16 @@ public class TestDataMagic
     @Test
     public void testCreateDefaultListWithImportantTag() throws Exception
     {
-        List<b> actualList = DataMagic.createDefaultObjectList(b.class, Important.class);
-        Assert.assertEquals(List.of(DataMagic.createDefaultObject(b.class, Important.class)), actualList);
+        List<b> actualList = ObjectGenerator.createDefaultObjectList(b.class, Important.class);
+        Assert.assertEquals(List.of(ObjectGenerator.createDefaultObject(b.class, Important.class)), actualList);
     }
 
     @Test
     public void testCreateDefaultListWithImportantFlagAndMultipleItems() throws Exception
     {
         List<b> expected = new ArrayList<>();
-        List<b> actualList = DataMagic.createDefaultObjectList(b.class, 12, Important.class);
-        for (int x = 0; x < 12; x++) expected.add(DataMagic.createDefaultObject(b.class, Important.class));
+        List<b> actualList = ObjectGenerator.createDefaultObjectList(b.class, 12, Important.class);
+        for (int x = 0; x < 12; x++) expected.add(ObjectGenerator.createDefaultObject(b.class, Important.class));
 
         Assert.assertEquals(expected, actualList);
     }
@@ -230,7 +230,7 @@ public class TestDataMagic
     @Test
     public void testCreateDefaultObjectSetsOnlyImportantFields() throws Exception
     {
-        b importantOnly = DataMagic.createDefaultObject(b.class, Important.class);
+        b importantOnly = ObjectGenerator.createDefaultObject(b.class, Important.class);
         b manuallyCreated = new b("", 1);
         manuallyCreated.string = DataConstants.getConstant(String.class);
         manuallyCreated.notImportant = null;
@@ -243,7 +243,7 @@ public class TestDataMagic
     {
         Method[] methods = b.class.getMethods();
         Map<Class<? extends Annotation>, List<Method>> expected = new HashMap<>();
-        Map<Class<? extends Annotation>, List<Method>> actual = DataMagic.getMethodsSortedByAnnotation(b.class);
+        Map<Class<? extends Annotation>, List<Method>> actual = ObjectGenerator.getMethodsSortedByAnnotation(b.class);
         for (Method method : methods)
         {
             Annotation[] annotations = method.getAnnotations();

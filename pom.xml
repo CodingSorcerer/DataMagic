@@ -6,7 +6,7 @@
 
     <groupId>net.lonewolfcode.opensource.springutilities</groupId>
     <artifactId>DataMagic</artifactId>
-    <version>0.0.4</version>
+    <version>0.1.0</version>
 
     <name>Data Magic</name>
     <description>
