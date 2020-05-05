@@ -1,5 +1,6 @@
 package net.lonewolfcode.opensource.springutilities.datamagic.testdata;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,6 +35,9 @@ public class a
     //custom objects
     public b class_b;
 
+    //common java objects
+    public Date object_date;
+
     //lists
     public List<String> string_list;
     public List<Byte> byte_list;
@@ -51,7 +55,6 @@ public class a
         return string;
     }
 
-    @Override
     public boolean equals(Object o)
     {
         if (this == o) return true;
@@ -75,6 +78,7 @@ public class a
                 Objects.equals(boolean_wrapper, a.boolean_wrapper) &&
                 Objects.equals(character_wrapper, a.character_wrapper) &&
                 Objects.equals(class_b, a.class_b) &&
+                Objects.equals(object_date, a.object_date) &&
                 Objects.equals(string_list, a.string_list) &&
                 Objects.equals(byte_list, a.byte_list) &&
                 Objects.equals(short_list, a.short_list) &&
@@ -89,6 +93,6 @@ public class a
 
     public int hashCode()
     {
-        return Objects.hash(byte_primitive, short_primitive, integer_primitive, long_primitive, float_primitive, double_primitive, boolean_primitive, char_primitive, string, byte_wrapper, short_wrapper, integer_wrapper, long_wrapper, float_wrapper, double_wrapper, boolean_wrapper, character_wrapper, class_b, string_list, byte_list, short_list, integer_list, long_list, float_list, double_list, boolean_list, character_list, b_list);
+        return Objects.hash(byte_primitive, short_primitive, integer_primitive, long_primitive, float_primitive, double_primitive, boolean_primitive, char_primitive, string, byte_wrapper, short_wrapper, integer_wrapper, long_wrapper, float_wrapper, double_wrapper, boolean_wrapper, character_wrapper, class_b, object_date, string_list, byte_list, short_list, integer_list, long_list, float_list, double_list, boolean_list, character_list, b_list);
     }
 }

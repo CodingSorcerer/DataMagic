@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"net.lonewolfcode.opensource.springutilities.datamagic","l":"DataConstants"},{"p":"net.lonewolfcode.opensource.springutilities.datamagic","l":"DataMagic"}]

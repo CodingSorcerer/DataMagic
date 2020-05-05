@@ -1,5 +1,6 @@
 package net.lonewolfcode.opensource.springutilities.datamagic;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -23,7 +24,8 @@ public class DataConstants
             {Float.class, (float) 1},
             {Double.class, (double) 1},
             {Boolean.class, true},
-            {Character.class, 'c'}
+            {Character.class, 'c'},
+            {Date.class, new Date()}
     }).collect(Collectors.toMap(data -> (Class<?>) data[0], data -> data[1]));
 
     public static <T> T getConstant(Class<T> clazz)

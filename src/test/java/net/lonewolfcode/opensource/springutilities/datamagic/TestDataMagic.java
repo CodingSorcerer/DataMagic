@@ -7,10 +7,7 @@ import org.junit.Test;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TestDataMagic
 {
@@ -128,6 +125,12 @@ public class TestDataMagic
     public void testCreateDefaultObjectSetsCustomObject() throws Exception
     {
         Assert.assertEquals(DataMagic.createDefaultObject(b.class), actual.class_b);
+    }
+
+    @Test
+    public void testCreateDefaultObjectSetsDate()
+    {
+        Assert.assertEquals(DataConstants.getConstant(Date.class), actual.object_date);
     }
 
     @Test
